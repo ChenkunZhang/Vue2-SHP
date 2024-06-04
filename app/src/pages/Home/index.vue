@@ -1,6 +1,6 @@
 <template>
     <div>
-        
+        <TypeNav></TypeNav>
     </div>
     
 </template>
