@@ -87,6 +87,7 @@ Vue CLI 是 Vue.js 官方的命令行工具，用于快速生成和管理 Vue �
    Less-loader
    ```bash
    npm install --save less less-loader@5
+   npm install axios@1.6.3
    ``` 
 3. **开发插件**：
    安装 Vue 插件，如 Vuex、Vue Router 等。
