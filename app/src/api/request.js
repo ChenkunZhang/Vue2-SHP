@@ -1,4 +1,6 @@
 import axios from "axios";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 
 // 二次封装axios 创建axios实例
 const service = axios.create({
@@ -10,6 +12,7 @@ const service = axios.create({
 service.interceptors.request.use(
   function (config) {
     // 在发送请求之前做些什么
+    NProgress.start();
     return config;
   },
   function (error) {
@@ -22,6 +25,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   function (response) {
     // 对响应数据做点什么
+    NProgress.done();
     return response;
   },
   function (error) {
