@@ -94,6 +94,7 @@ Vue CLI 是 Vue.js 官方的命令行工具，用于快速生成和管理 Vue �
 
    ```bash
    npm install vuex vue-router@3 --save
+   npm install vuex@4.5.3 --save
    ```
 
 
