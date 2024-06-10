@@ -27,6 +27,9 @@ export default {
     Footer
     Footer,
   },
+  mounted(){
+    //异步获取所有分类列表数据.在App组件中执行, 减少请求的次数.
+    this.$store.dispatch("getNavData");
   }
 }
 };
