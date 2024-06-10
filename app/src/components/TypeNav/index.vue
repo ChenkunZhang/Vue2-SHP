@@ -2,25 +2,32 @@
   <!--商品导航-->
   <div class="type-nav">
     <div class="container">
-      <div @mouseleave="leaveIndex">
+      <div @mouseleave="leaveHidden" @mouseenter="enterDisplay">
         <h2 class="all">全部商品分类</h2>
-        <nav class="nav">
-          <a href="###">服装城</a>
-          <a href="###">美妆馆</a>
-          <a href="###">尚品汇超市</a>
-          <a href="###">全球购</a>
-          <a href="###">闪购</a>
-          <a href="###">团购</a>
-          <a href="###">有趣</a>
-          <a href="###">秒杀</a>
-        </nav>
-        <div class="sort">
-          <div class="all-sort-list2">
-            <div class="item" v-for="(c1,index) in navData" :key="c1.categoryId">
-              <h3 @mouseenter="changeCurrentIndex(index)" :class="{cur:currentIndex==index}">
-                <a href="">{{ c1.categoryName }}</a>
+        <transition name="sort" >
+        <!--三级联动-->
+        <div class="sort" v-show="show">
+          <div class="all-sort-list2" @click="goSearch">
+            <div
+              class="item"
+              v-for="(c1, index) in navData"
+              :key="c1.categoryId"
+            >
+              <h3
+                @mouseenter="changeCurrentIndex(index)"
+                :class="{ cur: currentIndex == index }"
+              >
+                <a
+                  :category1Id="c1.categoryId"
+                  :categoryName="c1.categoryName"
+                  >{{ c1.categoryName }}</a
+                >
               </h3>
-              <div class="item-list clearfix">
+              <!--二,三级分类-->
+              <div
+                class="item-list clearfix"
+                :style="{ display: currentIndex == index ? 'block' : 'none' }"
+              >
                 <div class="subitem">
                   <dl
                     class="fore"
@@ -28,11 +35,19 @@
                     :key="c2.categoryId"
                   >
                     <dt>
-                      <a href="">{{ c2.categoryName }}</a>
+                      <a
+                        :category2Id="c2.categoryId"
+                        :categoryName="c2.categoryName"
+                        >{{ c2.categoryName }}</a
+                      >
                     </dt>
                     <dd>
                       <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                        <a href="">{{ c3.categoryName }}</a>
+                        <a
+                          :category3Id="c3.categoryId"
+                          :categoryName="c3.categoryName"
+                          >{{ c3.categoryName }}</a
+                        >
                       </em>
                     </dd>
                   </dl>
@@ -41,35 +56,80 @@
             </div>
           </div>
         </div>
+        </transition>
       </div>
+      <nav class="nav">
+        <a href="###">服装城</a>
+        <a href="###">美妆馆</a>
+        <a href="###">尚品汇超市</a>
+        <a href="###">全球购</a>
+        <a href="###">闪购</a>
+        <a href="###">团购</a>
+        <a href="###">有趣</a>
+        <a href="###">秒杀</a>
+      </nav>
     </div>
   </div>
 </template> 
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from "vuex"; //引入vuex
+import { throttle } from "lodash"; //引入节流函数
 
 export default {
   name: "TypeNav",
   data() {
     return {
       currentIndex: -1,
+      show: true,
     };
-  },  
+  },
   mounted() {
-    this.$store.dispatch("getNavData");
+    // 如果不是首页，不显示
+    if(this.$route.path != "/home")
+      this.show = false;
+    // 异步获取所有分类列表数据
+    //this.$store.dispatch("getNavData"); //在App组件中执行, 减少请求的次数
   },
   computed: {
+    // 获取vuex中的数据
     ...mapState({
       navData: (state) => state.home.navData,
     }),
   },
   methods: {
-    changeCurrentIndex(index) {
+    // 改变当前索引
+    // 节流
+    changeCurrentIndex: throttle(function (index) {
       this.currentIndex = index;
+    }, 200),
+    // 跳转到搜索页
+    goSearch(e) { 
+      if (e.target.tagName == "A") {
+        this.$router.push({
+          name: "search",
+          params: this.$router.params,
+          query: {
+            category1Id: e.target.getAttribute("category1Id"),
+            category2Id: e.target.getAttribute("category2Id"),
+            category3Id: e.target.getAttribute("category3Id"),
+            categoryName: e.target.getAttribute("categoryName"),
+          },
+        });
+      }
     },
-    leaveIndex() {
+    // 鼠标移入显示
+    enterDisplay() {
+      //if (this.$route.path == "/home") {
+        this.show = true;
+      //}
+    },
+    // 鼠标移出隐藏
+    leaveHidden() {
       this.currentIndex = -1;
+      if (this.$route.path != "/home") {
+        this.show = false;
+      }
     },
   },
 };
@@ -130,9 +190,9 @@ export default {
               color: #333;
             }
           }
-        .cur{
-          background:skyblue;
-        }
+          .cur {
+            background: skyblue;
+          }
 
           .item-list {
             display: none;
@@ -187,14 +247,18 @@ export default {
               }
             }
           }
-
-          &:hover {
-            .item-list {
-              display: block;
-            }
-          }
         }
       }
+    }
+    //过渡动画
+    .sort-enter, .sort-leave-to{
+      height: 0px;
+    } 
+    .sort-leave,.sort-enter-to{
+      height: 461px;
+    }
+    .sort-enter-active, .sort-leave-active {
+      transition: all 0.5 linear;
     }
   }
 }
