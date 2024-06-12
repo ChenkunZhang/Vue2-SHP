@@ -11,17 +11,27 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
+            <!--分类-->
             <li class="with-x" v-if="searchParams.categoryName">
               {{ searchParams.categoryName }}<i @click="removeCategory">×</i>
             </li>
+            <!--关键字-->
             <li class="with-x" v-if="searchParams.keyword">
               {{ searchParams.keyword }}<i @click="removeKeyword">×</i>
+            </li>
+            <!--属性-->
+            <li class="with-x" v-for="(prop,index) in searchParams.props" :key="index">
+              {{ prop.split(":")[1] }}<i @click="removeProp(index)">×</i>
+            </li>
+            <!--品牌-->
+            <li class="with-x" v-if="searchParams.trademark">
+              {{ searchParams.trademark.split(":")[1]}}<i @click="removeTrademark">×</i>
             </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector @getTrademark="getTrademark" @getAttr="getAttr"/>
 
         <!--details-->
         <div class="details clearfix">
@@ -174,6 +184,8 @@ export default {
     getProductList() {
       this.$store.dispatch("getProductList", this.searchParams);
     },
+
+    //面包屑
     // 删除分类属性
     removeCategory() {
       // 字段为undefined时，不会传给服务器
@@ -185,12 +197,35 @@ export default {
       // 重新跳转到当前页面
       this.$router.replace(this.$route.path); // replace方法不会产生历史记录
     },
+    // 删除关键字
     removeKeyword() {
       this.searchParams.keyword = undefined;
-      this.$router.replace({
-        name: "search",
-        query: this.$route.query,
-      });
+      this.getProductList();
+    },
+    // 获取品牌
+    getTrademark(trademark) {
+      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
+      this.getProductList();
+    },
+    // 删除品牌
+    removeTrademark() {
+      this.searchParams.trademark = undefined;
+      this.getProductList();
+    },
+    // 获取属性
+    getAttr({ attrId, attrName, attrValue }) {
+      let prop = `${attrId}:${attrValue}:${attrName}`;
+      // 判断是否已经存在该属性
+      if (!this.searchParams.props.includes(prop)) {
+        this.searchParams.props.push(prop);
+        this.getProductList();
+      }
+    },
+    // 删除属性
+    removeProp(index) {
+      // 删除数组中的元素
+      this.searchParams.props.splice(index,1);
+      this.getProductList();
     },
   },
 };
