@@ -108,7 +108,7 @@ export default {
       if (e.target.tagName == "A") {
         this.$router.push({
           name: "search",
-          params: this.$router.params,
+          params: this.$router.params||{},
           query: {
             category1Id: e.target.getAttribute("category1Id"),
             category2Id: e.target.getAttribute("category2Id"),
