@@ -61,6 +61,12 @@ export default {
       keyword: "",
     };
   },
+  watch: {
+    // 监听keyword的变化
+    $route(){
+      this.keyword = this.$route.params.keyword || "";
+    },
+  },
   methods: {
     // 跳转到搜索页面
     goToSearchPage() {

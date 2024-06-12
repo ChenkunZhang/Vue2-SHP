@@ -14,6 +14,9 @@
             <li class="with-x" v-if="searchParams.categoryName">
               {{ searchParams.categoryName }}<i @click="removeCategory">×</i>
             </li>
+            <li class="with-x" v-if="searchParams.keyword">
+              {{ searchParams.keyword }}<i @click="removeKeyword">×</i>
+            </li>
           </ul>
         </div>
 
@@ -181,6 +184,13 @@ export default {
       this.searchParams.categoryName = "";
       // 重新跳转到当前页面
       this.$router.replace(this.$route.path); // replace方法不会产生历史记录
+    },
+    removeKeyword() {
+      this.searchParams.keyword = undefined;
+      this.$router.replace({
+        name: "search",
+        query: this.$route.query,
+      });
     },
   },
 };
