@@ -11,10 +11,9 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x" v-if="searchParams.categoryName">
+              {{ searchParams.categoryName }}<i @click="removeCategory">×</i>
+            </li>
           </ul>
         </div>
 
@@ -168,8 +167,20 @@ export default {
     ...mapGetters(["goodsList", "attrsList", "trademarkList"]),
   },
   methods: {
+    // 获取商品列表
     getProductList() {
       this.$store.dispatch("getProductList", this.searchParams);
+    },
+    // 删除分类属性
+    removeCategory() {
+      // 字段为undefined时，不会传给服务器
+      // this.searchParams.category1Id = '';
+      this.searchParams.category1Id = "";
+      this.searchParams.category2Id = "";
+      this.searchParams.category3Id = "";
+      this.searchParams.categoryName = "";
+      // 重新跳转到当前页面
+      this.$router.replace(this.$route.path); // replace方法不会产生历史记录
     },
   },
 };
