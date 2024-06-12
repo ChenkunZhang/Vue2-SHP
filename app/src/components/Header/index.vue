@@ -37,7 +37,7 @@
             type="text"
             id="autocomplete"
             class="input-error input-xxlarge"
-            v-model="searchValue"
+            v-model="keyword"
           />
           <button
             class="sui-btn btn-xlarge btn-danger"
@@ -58,7 +58,7 @@ export default {
   data() {
     return {
       // 搜索框的值
-      searchValue: "",
+      keyword: "",
     };
   },
   methods: {
@@ -67,7 +67,7 @@ export default {
       this.$router.push({
         name: "search",
         params: {
-          searchValue: this.searchValue | undefined,
+          keyword: this.keyword || undefined,
         },
       });
     },

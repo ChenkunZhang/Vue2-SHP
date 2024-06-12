@@ -50,7 +50,7 @@ export default new VueRouter({
             }
         },
         { 
-            path: '/search/:searchValue',
+            path: '/search/keyword?',
             name: 'search', 
             component: Search,
             meta:{
