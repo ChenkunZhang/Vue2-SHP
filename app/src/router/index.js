@@ -9,6 +9,7 @@ import Home from '@/pages/Home'
 import Search from '@/pages/Search'
 import Register from '@/pages/Register'
 import Login from '@/pages/Login'
+import detail from '@/store/detail'
 
 //需要重写VueRouter.prototype原型对象身上的push|replace方法
 let originPush = VueRouter.prototype.push;//保存原始的push方法
@@ -56,6 +57,14 @@ export default new VueRouter({
             meta:{
                 show:true
             }
+        },
+        {
+          path: '/detail/:skuId',
+          name: 'detail',
+          component:detail,
+          meta:{
+              show:true
+          }
         },
         { 
             path: '/register',
