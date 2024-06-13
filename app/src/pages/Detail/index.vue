@@ -349,14 +349,17 @@
 <script>
   import ImageList from './ImageList/ImageList'
   import Zoom from './Zoom/Zoom'
-
+  
   export default {
     name: 'Detail',
-    
     components: {
       ImageList,
       Zoom
+    },
+    mounted(){
+      this.$store.dispatch('getGoodsDetail',this.$route.params.skuId)
     }
+
   }
 </script>
 
