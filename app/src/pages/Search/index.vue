@@ -34,10 +34,8 @@
             </li>
           </ul>
         </div>
-
         <!--selector-->
         <SearchSelector @getTrademark="getTrademark" @getAttr="getAttr" />
-
         <!--details-->
         <div class="details clearfix">
           <div class="sui-navbar">
@@ -106,35 +104,14 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <!--pagination-->
+          <Pagination
+            :pageSize="searchParams.pageSize"
+            :total="total"
+            :currentPage="searchParams.pageNo"
+            @changeCurrentpage="changeCurrentpage"
+          >
+          </Pagination>
         </div>
       </div>
     </div>
@@ -143,7 +120,7 @@
 
 <script>
 import SearchSelector from "./SearchSelector/SearchSelector";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 export default {
   name: "Search",
@@ -158,7 +135,7 @@ export default {
         props: [], // 商品属性的数组: ["属性ID:属性值:属性名"] 示例: ["2:6.0～6.24英寸:屏幕尺寸
         trademark: "",
         order: "1:desc", // 排序:初始状态应该是综合且降序
-        pageNr: 1,
+        pageNo: 1,
         pageSize: 10,
       },
     };
@@ -183,6 +160,9 @@ export default {
   },
   computed: {
     ...mapGetters(["goodsList", "attrsList", "trademarkList"]),
+    ...mapState({
+      total: (state) => state.search.productList.total
+    }),
     // 计算是哪种排序
     isOneActive() {
       return this.searchParams.order.split(":")[0] == 1;
@@ -256,8 +236,12 @@ export default {
       }
       this.getProductList();
     },
-  },
-};
+    changeCurrentpage(pageNo) {
+      this.searchParams.pageNo = pageNo;
+      this.getProductList();
+      }
+    },
+  }
 </script>
 
 <style lang="less" scoped>
