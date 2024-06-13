@@ -20,41 +20,34 @@
               {{ searchParams.keyword }}<i @click="removeKeyword">×</i>
             </li>
             <!--属性-->
-            <li class="with-x" v-for="(prop,index) in searchParams.props" :key="index">
+            <li
+              class="with-x"
+              v-for="(prop, index) in searchParams.props"
+              :key="index"
+            >
               {{ prop.split(":")[1] }}<i @click="removeProp(index)">×</i>
             </li>
             <!--品牌-->
             <li class="with-x" v-if="searchParams.trademark">
-              {{ searchParams.trademark.split(":")[1]}}<i @click="removeTrademark">×</i>
+              {{ searchParams.trademark.split(":")[1]
+              }}<i @click="removeTrademark">×</i>
             </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector @getTrademark="getTrademark" @getAttr="getAttr"/>
+        <SearchSelector @getTrademark="getTrademark" @getAttr="getAttr" />
 
         <!--details-->
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{ active: isOneActive }" @click="changeOrder('1')" >
+                  <a>综合<span v-show="isOneActive" class="iconfont" :class="{'icon-down':isDesc,'icon-up':!isDesc}"></span></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{ active: isTwoActive }" @click="changeOrder('2')">
+                  <a>价格<span v-show="isTwoActive" class="iconfont" :class="{'icon-down':isDesc,'icon-up':!isDesc}"></span></a>
                 </li>
               </ul>
             </div>
@@ -178,6 +171,17 @@ export default {
   },
   computed: {
     ...mapGetters(["goodsList", "attrsList", "trademarkList"]),
+    // 计算是哪种排序
+    isOneActive() {
+      return this.searchParams.order.split(":")[0] == 1;
+    },
+    isTwoActive() {
+      return this.searchParams.order.split(":")[0] == 2;
+    },
+    // 计算是升序还是降序
+    isDesc() {
+      return this.searchParams.order.split(":")[1] == "desc";
+    },
   },
   methods: {
     // 获取商品列表
@@ -200,7 +204,10 @@ export default {
     // 删除关键字
     removeKeyword() {
       this.searchParams.keyword = undefined;
-      this.getProductList();
+      this.$router.replace({
+        name: "search",
+        query: this.$route.query,
+      });
     },
     // 获取品牌
     getTrademark(trademark) {
@@ -224,7 +231,17 @@ export default {
     // 删除属性
     removeProp(index) {
       // 删除数组中的元素
-      this.searchParams.props.splice(index,1);
+      this.searchParams.props.splice(index, 1);
+      this.getProductList();
+    },
+    // 排序
+    changeOrder(order) {
+      // 判断是否是当前排序
+      if(this.searchParams.order.split(":")[0] == order) {
+        this.searchParams.order = `${order}:${this.isDesc? "asc" : "desc"}`;
+      } else {
+        this.searchParams.order = `${order}:${"desc"}`;
+      }
       this.getProductList();
     },
   },
