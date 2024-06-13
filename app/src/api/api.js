@@ -12,6 +12,11 @@ export function reqProductList(searchParams) {
   return service({ url: "/list", method: "post", data: searchParams });
 }
 
+// API接口统一管理 GoodsInfo 商品详情接口 /api/item/{skuId} GET
+export function reqGoodsInfo(skuId) {
+  return service({ url: `/item/${skuId}`, method: "get" });
+}
+
 // API接口统一管理 mock数据
 // 获取banner（Home首页轮播图接口）
 export function reqBannerList() {
