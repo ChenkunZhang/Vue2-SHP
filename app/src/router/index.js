@@ -48,4 +48,8 @@ VueRouter.prototype.replace = function (location, resolve, reject) {
 // Create a new router instance
 export default new VueRouter({
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    // return 期望滚动到哪个的位置
+    return { y: 0 };
+  },
 });
