@@ -43,11 +43,23 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li :class="{ active: isOneActive }" @click="changeOrder('1')" >
-                  <a>综合<span v-show="isOneActive" class="iconfont" :class="{'icon-down':isDesc,'icon-up':!isDesc}"></span></a>
+                <li :class="{ active: isOneActive }" @click="changeOrder('1')">
+                  <a
+                    >综合<span
+                      v-show="isOneActive"
+                      class="iconfont"
+                      :class="{ 'icon-down': isDesc, 'icon-up': !isDesc }"
+                    ></span
+                  ></a>
                 </li>
                 <li :class="{ active: isTwoActive }" @click="changeOrder('2')">
-                  <a>价格<span v-show="isTwoActive" class="iconfont" :class="{'icon-down':isDesc,'icon-up':!isDesc}"></span></a>
+                  <a
+                    >价格<span
+                      v-show="isTwoActive"
+                      class="iconfont"
+                      :class="{ 'icon-down': isDesc, 'icon-up': !isDesc }"
+                    ></span
+                  ></a>
                 </li>
               </ul>
             </div>
@@ -237,8 +249,8 @@ export default {
     // 排序
     changeOrder(order) {
       // 判断是否是当前排序
-      if(this.searchParams.order.split(":")[0] == order) {
-        this.searchParams.order = `${order}:${this.isDesc? "asc" : "desc"}`;
+      if (this.searchParams.order.split(":")[0] == order) {
+        this.searchParams.order = `${order}:${this.isDesc ? "asc" : "desc"}`;
       } else {
         this.searchParams.order = `${order}:${"desc"}`;
       }
