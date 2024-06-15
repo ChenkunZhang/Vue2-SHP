@@ -1,9 +1,9 @@
 <template>
   <div class="spec-preview">
-    <img :src="skuImageList[currentIndex].imgUrl" />
+    <img :src="imgUrl" />
     <div class="event" @mousemove="handler"></div>
     <div class="big">
-      <img :src="skuImageList[currentIndex].imgUrl" ref="big" />
+      <img :src="imgUrl" ref="big" />
     </div>
     <div class="mask" ref="mask"></div>
   </div>
@@ -17,6 +17,11 @@ export default {
     return {
       currentIndex: 0,
     };
+  },
+  computed: {
+    imgUrl() {
+      return this.skuImageList[this.currentIndex].imgUrl || "";
+    },
   },
   methods: {
     //修改当前响应式数据
@@ -50,8 +55,8 @@ export default {
       mask.style.left = left + "px";
       mask.style.top = top + "px";
       //设置big的位置
-      big.style.left = left * -zoomRatio +"px";
-      big.style.top= top * -zoomRatio + "px";
+      big.style.left = left * -zoomRatio + "px";
+      big.style.top = top * -zoomRatio + "px";
     },
   },
   mounted() {

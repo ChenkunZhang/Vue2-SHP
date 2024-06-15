@@ -18,7 +18,7 @@
           <!--放大镜效果-->
           <Zoom :skuImageList="skuInfo.skuImageList" />
           <!-- 小图列表 -->
-          <ImageList :skuImageList="skuInfo.skuImageList"/>
+          <ImageList :skuImageList="skuInfo.skuImageList" />
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
@@ -73,19 +73,19 @@
           <div class="choose">
             <div class="chooseArea">
               <div class="choosed"></div>
-              <dl
-                v-for="(spuSaleAttr) in spuSaleAttrList"
-                :key="spuSaleAttr.id"
-              >
+              <dl v-for="spuSaleAttr in spuSaleAttrList" :key="spuSaleAttr.id">
                 <dt class="title">{{ spuSaleAttr.saleAttrName }}</dt>
                 <dd
                   changepirce="0"
-                  :class="{active:spuSaleAttrValue.isChecked == 1}"
-                  v-for="(
-                    spuSaleAttrValue
-                  ) in spuSaleAttr.spuSaleAttrValueList"
+                  :class="{ active: spuSaleAttrValue.isChecked == 1 }"
+                  v-for="spuSaleAttrValue in spuSaleAttr.spuSaleAttrValueList"
                   :key="spuSaleAttrValue.id"
-                  @click="changSpuSaleAttrActive(spuSaleAttrValue,spuSaleAttr.spuSaleAttrValueList)"
+                  @click="
+                    changSpuSaleAttrActive(
+                      spuSaleAttrValue,
+                      spuSaleAttr.spuSaleAttrValueList
+                    )
+                  "
                 >
                   {{ spuSaleAttrValue.saleAttrValueName }}
                 </dd>
@@ -93,12 +93,16 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt"/>
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input
+                  autocomplete="off"
+                  class="itxt"
+                  v-model="skuNum"
+                  @change="changSkuNum"
+                />
+                <a href="javascript:" class="plus" @click="addSkuNum">+</a>
+                <a href="javascript:" class="mins" @click="minusSkuNum">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
               </div>
             </div>
           </div>
@@ -343,6 +347,11 @@ import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "Detail",
+  data() {
+    return {
+      skuNum: 1,
+    };
+  },
   components: {
     ImageList,
     Zoom,
@@ -357,11 +366,30 @@ export default {
     ...mapGetters(["categoryView", "skuInfo", "spuSaleAttrList"]),
   },
   methods: {
-    changSpuSaleAttrActive(spuSaleAttrValue,spuSaleAttrValueList) {
+    // 切换商品属性
+    changSpuSaleAttrActive(spuSaleAttrValue, spuSaleAttrValueList) {
       spuSaleAttrValueList.forEach((item) => {
         item.isChecked = false;
       });
       spuSaleAttrValue.isChecked = true;
+    },
+    // 加减商品数量
+    addSkuNum() {
+      this.skuNum++;
+    },
+    minusSkuNum() {
+      if (this.skuNum > 1) {
+        this.skuNum--;
+      }
+    },
+    // 修改商品数量
+    changSkuNum(event) {
+      let eventValue = event.target.value * 1; // 转换为数字
+      if (eventValue < 1 || isNaN(eventValue)) {
+        this.skuNum = 1;
+      } else {
+        this.skuNum = parseInt(eventValue);
+      }
     },
   },
 };
