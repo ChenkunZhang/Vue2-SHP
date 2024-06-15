@@ -16,4 +16,7 @@ new Vue({
   render: (h) => h(App),
   router, // Add the router to the Vue instance
   store, // Add the store to the Vue instance
+  beforeCreate(){
+    Vue.prototype.$bus = this; // Adding a global event bus
+  }
 }).$mount("#app");

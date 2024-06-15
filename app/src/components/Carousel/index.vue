@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import { watch } from "less";
 import Swiper from "swiper";
 import "swiper/css/swiper.min.css";
 

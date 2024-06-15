@@ -29,8 +29,5 @@ export default {
     spuSaleAttrList(state) {
       return state.goodsInfo.spuSaleAttrList || [];
     },
-    skuImageList(state) {
-      return state.goodsInfo.skuImageList || [];
-    },
   },
 };
