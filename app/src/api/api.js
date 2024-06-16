@@ -16,7 +16,7 @@ export function reqProductList(searchParams) {
 export function reqGoodsInfo(skuId) {
   return service({ url: `/item/${skuId}`, method: "get" });
 }
-// API接口统一管理 GoodsInfo 商品详情接口 /api/cart/addToCart/{ skuId }/{ skuNum } POST
+// API接口统一管理 加入购物车 /api/cart/addToCart/{ skuId }/{ skuNum } POST
 export function reqAddToCart(skuId, skuNum) {
   return service({
     url: `/cart/addToCart/${skuId}/${skuNum}`,
