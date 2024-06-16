@@ -16,6 +16,13 @@ export function reqProductList(searchParams) {
 export function reqGoodsInfo(skuId) {
   return service({ url: `/item/${skuId}`, method: "get" });
 }
+// API接口统一管理 GoodsInfo 商品详情接口 /api/cart/addToCart/{ skuId }/{ skuNum } POST
+export function reqAddToCart(skuId, skuNum) {
+  return service({
+    url: `/cart/addToCart/${skuId}/${skuNum}`,
+    method: "post",
+  });
+}
 
 // API接口统一管理 mock数据
 // 获取banner（Home首页轮播图接口）

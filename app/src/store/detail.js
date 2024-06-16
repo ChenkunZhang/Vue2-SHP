@@ -1,4 +1,4 @@
-import { reqGoodsInfo } from "@/api/api";
+import { reqGoodsInfo,reqAddToCart } from "@/api/api";
 
 export default {
   state: {
@@ -18,6 +18,14 @@ export default {
         commit("RECEIVE_GOODSINFO", result.data.data);
       }
     },
+    async addToCart({ commit }, { skuId, skuNum }) {
+      const result = await reqAddToCart(skuId, skuNum);
+      if (result.status === 200) {
+        return "添加购物车成功";
+      } else {
+        return "添加购物车失败";
+      }
+    }
   },
   getters: {
     categoryView(state) {

@@ -103,6 +103,7 @@
                 <a href="javascript:" class="mins" @click="minusSkuNum">-</a>
               </div>
               <div class="add">
+                <a @click="addToCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -389,6 +390,30 @@ export default {
         this.skuNum = 1;
       } else {
         this.skuNum = parseInt(eventValue);
+      }
+    },
+    // 加入购物车
+    async addToCart() {
+      try {
+        // 调用加入购物车接口
+        await this.$store.dispatch("addToCart", {
+          skuId: this.$route.params.skuId,
+          skuNum: this.skuNum,
+        });
+        // 提示加入购物车成功
+        // 保存skuInfo到sessionStorage
+        // 一些简单的数据skuNum，通过query形式给路由组件传递过去
+        // 产品信息的数据【比较复杂:skuInfo】,通过会话存储（不持久化,会话结束数据在消失）
+        // 本地存储|会话存储，一般存储的是字符串
+        sessionStorage.setItem("skuInfo", JSON.stringify(this.skuInfo));
+        this.$router.push({
+          name: "addcartsuccess",
+          query: {
+            skuNum: this.skuNum,
+          },
+        });
+      } catch (err) {
+        alert(err.message);
       }
     },
   },

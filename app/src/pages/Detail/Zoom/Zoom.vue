@@ -1,9 +1,9 @@
 <template>
   <div class="spec-preview">
-    <img :src="imgUrl" />
+    <img :src="skuImageList[this.currentIndex].imgUrl " />
     <div class="event" @mousemove="handler"></div>
     <div class="big">
-      <img :src="imgUrl" ref="big" />
+      <img :src="skuImageList[this.currentIndex].imgUrl " ref="big" />
     </div>
     <div class="mask" ref="mask"></div>
   </div>
@@ -17,11 +17,6 @@ export default {
     return {
       currentIndex: 0,
     };
-  },
-  computed: {
-    imgUrl() {
-      return this.skuImageList[this.currentIndex].imgUrl || "";
-    },
   },
   methods: {
     //修改当前响应式数据
