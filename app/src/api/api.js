@@ -24,6 +24,12 @@ export function reqAddToCart(skuId, skuNum) {
   });
 }
 
+// API接口统一管理 获取购物车列表 /api/cart/cartList GET
+export function reqShopCartList() {
+  return service({ url: "/cart/cartList", method: "get" });
+}
+
+
 // API接口统一管理 mock数据
 // 获取banner（Home首页轮播图接口）
 export function reqBannerList() {

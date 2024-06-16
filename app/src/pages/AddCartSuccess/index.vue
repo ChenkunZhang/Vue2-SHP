@@ -16,7 +16,7 @@
         </div>
         <div class="right-gocart">
           <a class="sui-btn btn-xlarge" @click="goToDetail">查看商品详情</a>
-          <a href="javascript:">去购物车结算 > </a>
+          <a @click="goToShopCart">去购物车结算 > </a>
         </div>
       </div>
     </div>
@@ -41,6 +41,11 @@ export default {
         params: {
           skuId: this.skuInfo.id,
         },
+      });
+    },
+    goToShopCart() {
+      this.$router.push({
+        name: "shopcart",
       });
     },
   },
