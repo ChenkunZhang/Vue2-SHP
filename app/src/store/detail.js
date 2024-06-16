@@ -1,8 +1,10 @@
 import { reqGoodsInfo,reqAddToCart } from "@/api/api";
+import { getUUID } from "@/utils/uuid_token";
 
 export default {
   state: {
     goodsInfo: {},
+    uuid_token: getUUID(),
   },
   mutations: {
     // 接收商品详情信息
