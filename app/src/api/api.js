@@ -58,6 +58,14 @@ export function reqSendCode(phone) {
     method: "get",
   });
 }
+// API接口统一管理 用户登陆 /api/user/passport/login POST
+export function reqLogin(data) {
+  return service({
+    url: `/user/passport/login`,
+    method: "post",
+    data,
+  });
+}
 
 // API接口统一管理 mock数据
 // 获取banner（Home首页轮播图接口）
