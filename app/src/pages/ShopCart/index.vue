@@ -11,104 +11,57 @@
         <div class="cart-th6">操作</div>
       </div>
       <div class="cart-body">
-        <ul class="cart-list">
+        <ul
+          class="cart-list"
+          v-for="cartInfo in cartInfoList"
+          :key="cartInfo.id"
+        >
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" />
+            <input
+              type="checkbox"
+              name="chk_list"
+              :checked="cartInfo.isChecked == 1"
+              @change="changeChecked($event, cartInfo.skuId)"
+            />
           </li>
           <li class="cart-list-con2">
-            <img src="./images/goods1.png" />
+            <img :src="cartInfo.imgUrl" />
             <div class="item-msg">
-              米家（MIJIA） 小米小白智能摄像机增强版
-              1080p高清360度全景拍摄AI增强
+              {{ cartInfo.skuName }}
             </div>
           </li>
           <li class="cart-list-con4">
-            <span class="price">399.00</span>
+            <span class="price">{{ cartInfo.skuPrice }}.00</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
+            <a
+              href="javascript:void(0)"
+              class="mins"
+              @click="addToCart('mins', cartInfo, -1)"
+              >-</a
+            >
             <input
               autocomplete="off"
               type="text"
-              value="1"
+              :value="cartInfo.skuNum"
               minnum="1"
               class="itxt"
+              @change="addToCart('change', cartInfo, $event.target.value * 1)"
             />
-            <a href="javascript:void(0)" class="plus">+</a>
+            <a
+              href="javascript:void(0)"
+              class="plus"
+              @click="addToCart('add', cartInfo, 1)"
+              >+</a
+            >
           </li>
           <li class="cart-list-con6">
-            <span class="sum">399</span>
+            <span class="sum"
+              >{{ cartInfo.skuNum * cartInfo.skuPrice }}.00</span
+            >
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
-            <br />
-            <a href="#none">移到收藏</a>
-          </li>
-        </ul>
-
-        <ul class="cart-list">
-          <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" id="" value="" />
-          </li>
-          <li class="cart-list-con2">
-            <img src="./images/goods2.png" />
-            <div class="item-msg">
-              华为（MIJIA） 华为metaPRO 30 浴霸4摄像 超清晰
-            </div>
-          </li>
-          <li class="cart-list-con4">
-            <span class="price">5622.00</span>
-          </li>
-          <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
-            <input
-              autocomplete="off"
-              type="text"
-              value="1"
-              minnum="1"
-              class="itxt"
-            />
-            <a href="javascript:void(0)" class="plus">+</a>
-          </li>
-          <li class="cart-list-con6">
-            <span class="sum">5622</span>
-          </li>
-          <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
-            <br />
-            <a href="#none">移到收藏</a>
-          </li>
-        </ul>
-
-        <ul class="cart-list">
-          <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" id="" value="" />
-          </li>
-          <li class="cart-list-con2">
-            <img src="./images/goods3.png" />
-            <div class="item-msg">
-              iphone 11 max PRO 苹果四摄 超清晰 超费电 超及好用
-            </div>
-          </li>
-          <li class="cart-list-con4">
-            <span class="price">11399.00</span>
-          </li>
-          <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
-            <input
-              autocomplete="off"
-              type="text"
-              value="1"
-              minnum="1"
-              class="itxt"
-            />
-            <a href="javascript:void(0)" class="plus">+</a>
-          </li>
-          <li class="cart-list-con6">
-            <span class="sum">11399</span>
-          </li>
-          <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a href="#none" class="sindelet" @click="deleteCart(cartInfo.skuId)">删除</a>
             <br />
             <a href="#none">移到收藏</a>
           </li>
@@ -117,11 +70,16 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" />
+        <input
+          class="chooseAll"
+          type="checkbox"
+          :checked="isAllChecked && cartInfoList.length > 0"
+          @change="updateAllChecked"
+        />
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a @click="deleteAllCheckedCart">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
@@ -140,15 +98,107 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from "vuex";
+import { throttle } from "lodash";
 
 export default {
   name: "ShopCart",
   mounted() {
-    this.$store.dispatch("getShopCartList");
+    // 获取购物车列表
+    this.getShopCartList();
   },
   computed: {
-    ...mapState(["shopCartList"]),
+    // 购物车信息
+    cartInfoList() {
+      if (this.shopcartInfoList === undefined) {
+        return [];
+      } else {
+        return this.shopcartInfoList;
+      }
+    },
+    // 购物车列表
+    ...mapGetters(["shopcartInfoList"]),
+    // 是否全选
+    isAllChecked() {
+      return this.cartInfoList.every((item) => item.isChecked === 1);
+    },
+  },
+  methods: {
+    // 获取购物车列表
+    getShopCartList() {
+      this.$store.dispatch("getShopCartList");
+    },
+    // 改变选中状态
+    async changeChecked(event, skuId) {
+      try {
+        await this.$store.dispatch("updateCheckCart", {
+          skuId: skuId,
+          isChecked: event.target.checked ? "1" : "0",
+        });
+        this.getShopCartList();
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+    // 全选 / 全不选
+    async updateAllChecked(event) {
+      try {
+        await this.$store.dispatch("updateCheckCartAll", {
+          isChecked: event.target.checked ? "1" : "0",
+        });
+        this.getShopCartList();
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+    // 修改商品数量
+     addToCart:throttle(async function(type, cartInfo, num) {
+      switch (type) {
+        case "add":
+          num = 1;
+          break;
+        case "mins":
+          num = cartInfo.skuNum > 1 ? -1 : 0;
+          break;
+        case "change":
+          if (isNaN(num) || num < 1) {
+            num = 0;
+          } else {
+            num = parseInt(num) - cartInfo.skuNum;
+          }
+          break;
+      }
+      try {
+        await this.$store.dispatch("addToCart", {
+          skuId: cartInfo.skuId,
+          skuNum: num,
+        });
+        //再一次获取服务器最新的数据进行展示
+        this.$store.dispatch("getShopCartList");
+      } catch (error) {
+        alert(error.message);
+      }
+    }),
+    //删除购物车商品
+    async deleteCart(skuId) {
+      try {
+        await this.$store.dispatch("deleteCart", {
+          skuId: skuId,
+        });
+        this.getShopCartList();
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+    //删除选中的购物车商品
+    async deleteAllCheckedCart(){
+      try{
+        await this.$store.dispatch("deleteAllCheckedCart");
+        this.getShopCartList();
+      }catch(error){
+        alert(error.message);
+      }
+    }
   },
 };
 </script>

@@ -16,12 +16,25 @@ export function reqProductList(searchParams) {
 export function reqGoodsInfo(skuId) {
   return service({ url: `/item/${skuId}`, method: "get" });
 }
+
+//购物车
 // API接口统一管理 加入购物车 /api/cart/addToCart/{ skuId }/{ skuNum } POST
 export function reqAddToCart(skuId, skuNum) {
   return service({
     url: `/cart/addToCart/${skuId}/${skuNum}`,
     method: "post",
   });
+}
+// API接口统一管理 切换商品选中状态 /api/cart/checkCart/{skuID}/{isChecked} GET
+export function reqCheckCart(skuId, isChecked) {
+  return service({
+    url: `/cart/checkCart/${skuId}/${isChecked}`,
+    method: "get",
+  });
+}
+// API接口统一管理 删除购物车商品 /api/cart/deleteCart/{skuId} DELETE
+export function reqDeleteCart(skuId) {
+  return service({ url: `/cart/deleteCart/${skuId}`, method: "delete" });
 }
 
 // API接口统一管理 获取购物车列表 /api/cart/cartList GET

@@ -1,6 +1,7 @@
 import axios from "axios";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
+import store from "@/store"; // 引入store
 
 // 二次封装axios 创建axios实例
 const service = axios.create({
@@ -12,6 +13,11 @@ const service = axios.create({
 service.interceptors.request.use(
   function (config) {
     // 在发送请求之前做些什么
+    // 从vuex中获取token
+    if(store.state.detail.uuid_token){
+      // userTempId添加到请求头中，传递给服务器（和后台商量好的数据名）
+      config.headers.userTempId = store.state.detail.uuid_token;
+    }
     NProgress.start();
     return config;
   },
