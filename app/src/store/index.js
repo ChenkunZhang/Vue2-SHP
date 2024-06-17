@@ -15,5 +15,6 @@ export default new Vuex.Store({
     search,
     detail,
     shopcart,
+    user,
   },
 });

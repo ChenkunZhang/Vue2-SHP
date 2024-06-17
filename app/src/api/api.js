@@ -42,6 +42,18 @@ export function reqShopCartList() {
   return service({ url: "/cart/cartList", method: "get" });
 }
 
+//登陆注册
+// API接口统一管理 登录 /api/user/passport/register POST
+export function reqRegister(userdata) {
+  return service({ url: "/user/passport/register", method: "post" ,data:userdata});
+}
+// API接口统一管理 获取注册验证码 /api/user/passport/sendCode/phone
+export function reqSendCode(phone) { 
+   return service({
+    url: `/user/passport/sendCode/${phone}`,
+    method: "get",
+  });
+}
 
 // API接口统一管理 mock数据
 // 获取banner（Home首页轮播图接口）
