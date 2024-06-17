@@ -44,12 +44,16 @@ export function reqShopCartList() {
 
 //登陆注册
 // API接口统一管理 登录 /api/user/passport/register POST
-export function reqRegister(userdata) {
-  return service({ url: "/user/passport/register", method: "post" ,data:userdata});
+export function reqRegister(data) {
+  return service({
+    url: "/user/passport/register",
+    method: "post",
+    data,
+  });
 }
 // API接口统一管理 获取注册验证码 /api/user/passport/sendCode/phone
-export function reqSendCode(phone) { 
-   return service({
+export function reqSendCode(phone) {
+  return service({
     url: `/user/passport/sendCode/${phone}`,
     method: "get",
   });

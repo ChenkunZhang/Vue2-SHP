@@ -33,16 +33,24 @@
       </div>
       <div class="content">
         <label>登录密码:</label>
-        <input type="password" placeholder="请输入你的登录密码" v-model="userdata.password"/>
+        <input
+          type="password"
+          placeholder="请输入你的登录密码"
+          v-model="userdata.password"
+        />
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="content">
         <label>确认密码:</label>
-        <input type="password" placeholder="请输入确认密码" v-model=" password1"/>
+        <input
+          type="password"
+          placeholder="请输入确认密码"
+          v-model="password1"
+        />
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="controls">
-        <input name="m1" type="checkbox" :checked="agree"/>
+        <input name="m1" type="checkbox" :checked="agree" />
         <span>同意协议并注册《尚品汇用户协议 》</span>
         <span class="error-msg">错误提示信息</span>
       </div>
@@ -81,7 +89,7 @@ export default {
         password: "",
       },
       password1: "",
-      agree:false,
+      agree: false,
     };
   },
   methods: {
@@ -96,14 +104,14 @@ export default {
         alert(error.message);
       }
     },
-    async register(){
-      try{
-        await this.$store.dispatch("register", this.userdata)
+    async register() {
+      try {
+        await this.$store.dispatch("register", this.userdata);
         this.$router.push("/login");
-      }catch(error){
+      } catch (error) {
         alert(error.message);
       }
-    }
+    },
   },
 };
 </script>
