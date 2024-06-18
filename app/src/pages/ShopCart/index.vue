@@ -84,10 +84,10 @@
         <a href="#none">清除下柜商品</a>
       </div>
       <div class="money-box">
-        <div class="chosed">已选择 <span>0</span>件商品</div>
+        <div class="chosed">已选择 <span>{{checkedNum }}</span>件商品</div>
         <div class="sumprice">
           <em>总价（不含运费） ：</em>
-          <i class="summoney">0</i>
+          <i class="summoney">{{totalPrice}}</i>
         </div>
         <div class="sumbtn">
           <a class="sum-btn" href="###" target="_blank">结算</a>
@@ -122,6 +122,25 @@ export default {
     isAllChecked() {
       return this.cartInfoList.every((item) => item.isChecked === 1);
     },
+    // 总价
+    totalPrice(){
+      return this.cartInfoList.reduce((pre, item) => {
+        if(item.isChecked === 1){
+          return pre + item.skuPrice * item.skuNum;
+        }else{
+          return pre;
+        }
+      }, 0);
+    },
+    checkedNum(){
+      return this.cartInfoList.reduce((pre, item) => {
+        if(item.isChecked === 1){
+          return pre + item.skuNum;
+        }else{
+          return pre;
+        }
+      }, 0);
+    }
   },
   methods: {
     // 获取购物车列表
