@@ -14,9 +14,13 @@ service.interceptors.request.use(
   function (config) {
     // 在发送请求之前做些什么
     // 从vuex中获取token
-    if(store.state.detail.uuid_token){
+    if (store.state.detail.uuid_token) {
       // userTempId添加到请求头中，传递给服务器（和后台商量好的数据名）
       config.headers.userTempId = store.state.detail.uuid_token;
+    }
+    if (store.state.user.token) {
+      // token添加到请求头中，传递给服务器
+      config.headers.token = store.state.user.token;
     }
     NProgress.start();
     return config;

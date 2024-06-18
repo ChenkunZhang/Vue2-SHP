@@ -66,6 +66,20 @@ export function reqLogin(data) {
     data,
   });
 }
+// API接口统一管理 获取用户信息 /api/user/passport/auth/getUserInfo GET
+export function reqGetUserInfo() {
+  return service({
+    url: `/user/passport/auth/getUserInfo`,
+    method: "get",
+  });
+}
+// API接口统一管理 退出登录 /api/user/passport/logout GET
+export function reqLogout() {
+  return service({
+    url: `/user/passport/logout`,
+    method: "get",
+  });
+}
 
 // API接口统一管理 mock数据
 // 获取banner（Home首页轮播图接口）

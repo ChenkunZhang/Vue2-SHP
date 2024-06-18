@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "@/store";
 
 // Tell Vue to use the router
 Vue.use(VueRouter);
@@ -46,7 +47,7 @@ VueRouter.prototype.replace = function (location, resolve, reject) {
 };
 
 // Create a new router instance
-export default new VueRouter({
+let router = new VueRouter({
   routes,
   scrollBehavior(to, from, savedPosition) {
     // return 期望滚动到哪个的位置
@@ -54,3 +55,44 @@ export default new VueRouter({
     return { y: 0 };
   },
 });
+// 使用 beforeEach 钩子
+router.beforeEach(async (to,from,next)=>{
+  let token = store.state.user.token;
+  let username = store.state.user.userInfo.name;
+  if(token){
+    // 如果用户已经登录，但是访问的是登录页面或者注册页面，直接跳转到首页
+    if(to.path === "/login"||to.path === "/register"){
+      next("/");
+    }else{
+      if(username){
+        // 登陆了且有用户信息，放行
+        next();
+      }else{
+        try {
+        // 登陆了且没有用户信息
+        //在路由跳转之前获取用户信息且放行
+          await store.dispatch("getUserInfo");
+          next();
+        } catch (error) {
+          // 获取用户信息失败，清空token，跳转到登录页
+          await store.dispatch('userLogout');
+          next("/login");
+        }
+      }
+      }
+    }else{
+      // 用户没有登录
+      if(to.path === "/login"||to.path === "/register"||to.path === "/home"||to.path==="/search"||to.path=="shopcart"){
+        //访问的是登录页或者注册页，直接放行
+        next();
+      }else{
+        //访问的不是上述页面，跳转到主页
+        next("/home");
+    }
+  }
+}
+)
+
+export default  router;
+
+
