@@ -97,6 +97,13 @@ export function reqSubmitOrder(tradeNo,orderInfo) {
     data:orderInfo,
   });
 }
+// API接口统一管理 获取订单支付信息 /api/payment/weixin/createNative/{orderId} GET
+export function reqPayment(orderId) {
+  return service({
+    url: `/payment/weixin/createNative/${orderId}`,
+    method: "get",
+  });
+}
 
 // API接口统一管理 mock数据
 // 获取banner（Home首页轮播图接口）
