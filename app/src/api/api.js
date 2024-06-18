@@ -81,6 +81,15 @@ export function reqLogout() {
   });
 }
 
+//订单
+// API接口统一管理 获取订单交易页信息 /api/order/auth/trade GET
+export function reqTrade() {
+  return service({
+    url: `order/auth/trade`,
+    method: "get",
+  });
+}
+
 // API接口统一管理 mock数据
 // 获取banner（Home首页轮播图接口）
 export function reqBannerList() {
