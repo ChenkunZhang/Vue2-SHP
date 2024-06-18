@@ -89,6 +89,14 @@ export function reqTrade() {
     method: "get",
   });
 }
+// API接口统一管理 提交订单 /api/order/auth/submitOrder?tradeNo={tradeNo} POST
+export function reqSubmitOrder(tradeNo,orderInfo) {
+  return service({
+    url: `order/auth/submitOrder?tradeNo=${tradeNo}`,
+    method: "post",
+    data:orderInfo,
+  });
+}
 
 // API接口统一管理 mock数据
 // 获取banner（Home首页轮播图接口）

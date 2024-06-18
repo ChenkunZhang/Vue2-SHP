@@ -1,4 +1,4 @@
-import { reqTrade } from "@/api/api";
+import { reqTrade} from "@/api/api";
 
 export default {
   state: {

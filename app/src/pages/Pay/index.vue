@@ -84,6 +84,7 @@
 <script>
   export default {
     name: 'Pay',
+    props:["orderId"]
   }
 </script>
 

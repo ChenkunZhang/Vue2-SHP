@@ -65,6 +65,8 @@ export default [
     meta: {
       show: true,
     },
+
+    props: route => ({orderId: route.query.orderId}),
   },
   {
     path: "/register",

@@ -118,7 +118,7 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <a class="subBtn" @click="submitOrder()">提交订单</a>
     </div>
   </div>
 </template>
@@ -147,6 +147,7 @@ export default {
     },
   },
   methods: {
+    //  获取订单
     getTrade() {
       this.$store.dispatch("getTrade");
     },
@@ -157,8 +158,28 @@ export default {
       });
       userAddress.isDefault = 1;
     },
+    // 设置支付方式
     changePayWay(payWay) {
       this.payWay = payWay;
+    },
+    // 提交订单
+    async submitOrder() {
+      let orderInfo = {
+        consignee: this.defaultAddress.consignee, //最终收件人的名字
+        consigneeTel: this.defaultAddress.phoneNum, //最终收件人的手机号
+        deliveryAddress: this.defaultAddress.fullAddress, //收件人的地址
+        paymentWay: "ONLINE", //支付方式
+        orderComment: this.msg, //买家的留言信息
+        orderDetailList: this.detailArrayList, //商品清单
+      };
+      let tradeNo = this.trade.tradeNo;
+      try{
+        await this.$store.dispatch("submitOrder", { orderInfo, tradeNo });
+        let orderId =this.$store.state.pay.orderId;
+        this.$router.push("/pay?orderId="+orderId);
+      }catch(error){
+        alert(error.message);
+      }
     },
   },
 };
