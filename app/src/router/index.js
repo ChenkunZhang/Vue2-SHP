@@ -75,7 +75,7 @@ router.beforeEach(async (to,from,next)=>{
           next();
         } catch (error) {
           // 获取用户信息失败，清空token，跳转到登录页
-          await store.dispatch('userLogout');
+          await store.dispatch('logout');
           next("/login");
         }
       }

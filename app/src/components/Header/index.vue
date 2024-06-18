@@ -65,15 +65,11 @@ export default {
       keyword: "",
     };
   },
-  mounted() {
-    // 获取用户信息
-    this.$store.dispatch("getUserInfo");
-  },
-  computed: {
-    // 获取用户信息
-    username() {
+  computed:{
+    //用户名信息
+    username(){
       return this.$store.state.user.userInfo.name;
-    },
+    }
   },
   watch: {
     // 监听keyword的变化
