@@ -1,4 +1,5 @@
 import { reqTrade } from "@/api/api";
+import detail from "./detail";
 
 export default {
   state: {
@@ -21,5 +22,13 @@ export default {
       }
     },
   },
-  getters: {},
+  getters: {
+    // 用户地址列表
+    userAddressList(state) {
+      return state.trade.userAddressList || [];
+    },
+    detailArrayList(state) {
+      return state.trade.detailArrayList || [];
+    }
+  },
 };

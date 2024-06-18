@@ -63,7 +63,7 @@ export default {
     // 获取用户信息
     async getUserInfo({ commit }) {
       const result = await reqGetUserInfo();
-      console.log(result)
+      //console.log(result)
       if (result.data.code === 200) {
         commit("RECIEVE_USERINFO", result.data.data);
         return "ok";
