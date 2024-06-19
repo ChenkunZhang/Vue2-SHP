@@ -159,15 +159,11 @@ export default {
               }
             }, 1000);
           } else {
+            Message.info("请联系管理员处理订单");
             done();
           }
         },
-      }).catch(() => {
-            Message({
-              type: "info",
-              message: "请联系管理员处理订单",
-            });
-        });
+      }).catch(() => {});
     },
 
     //
