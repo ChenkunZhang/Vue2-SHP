@@ -145,7 +145,9 @@ export default {
             instance.confirmButtonText = "Loading...";
             let timeoutID = setTimeout(() => {
               this.getPayStatus(this.orderId);
-              if (this.$store.state.pay.payStatus === 200) {
+              //开发方便调试
+               if (true) {
+             // if (this.$store.state.pay.payStatus === 200) {
                 Message.success("支付成功");
                 clearTimeout(timeoutID);
                 instance.confirmButtonLoading = false;
