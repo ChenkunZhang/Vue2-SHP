@@ -44,7 +44,7 @@
                     style="width: 100px; height: 100px"
                   />
                   <a href="#" class="block-text">{{ detail.skuName }}</a>
-                  <span>x1</span>
+                  <span>x{{detail.skuNum}}</span>
                   <a href="#" class="service">售后申请</a>
                 </div>
               </td>
@@ -58,7 +58,7 @@
                 </ul>
               </td>
               <td v-if="index == 0" :rowspan="order.orderDetailList.length" width="8%" class="center">
-                <a href="#" class="btn">{{ order.processStatus }} </a>
+                <a href="#" class="btn">{{ order.orderStatusName }} </a>
               </td>
               <td v-if="index == 0" :rowspan="order.orderDetailList.length" width="13%" class="center">
                 <ul class="unstyled">
