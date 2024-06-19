@@ -81,14 +81,16 @@ router.beforeEach(async (to,from,next)=>{
       }
       }
     }else{
-      // 用户没有登录
-      if(to.path === "/login"||to.path === "/register"||to.path === "/home"||to.path==="/search"||to.path=="shopcart"){
-        //访问的是登录页或者注册页，直接放行
-        next();
+      //未登录：不能去交易相关、不能去支付相关【pay|paysuccess】、不能去个人中心
+      //未登录去上面这些路由-----登录
+      let toPath = to.path;
+      if(toPath.indexOf('/trade')!=-1 || toPath.indexOf('/pay')!=-1||toPath.indexOf('/center')!=-1){
+        //把未登录的时候向去而没有去成的信息，存储于地址栏中【路由】
+        next('/login?redirect='+toPath);
       }else{
-        //访问的不是上述页面，跳转到主页
-        next("/home");
-    }
+         //去的不是上面这些路由（home|search|shopCart）---放行
+         next();
+      }
   }
 }
 )
