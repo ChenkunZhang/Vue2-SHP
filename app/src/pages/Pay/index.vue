@@ -76,7 +76,7 @@
         <div class="hr"></div>
 
         <div class="submit">
-          <router-link class="btn" to="/paysuccess">立即支付</router-link>
+          <a class="btn" @click="open">立即支付</a>
         </div>
         <div class="otherpay">
           <div class="step-tit">
@@ -94,10 +94,15 @@
 
 <script>
 import { mapState } from "vuex";
+import QRCode from "qrcode";
+import { Message } from "element-ui";
 
 export default {
   name: "Pay",
   props: ["orderId"],
+  data() {
+    return {};
+  },
   mounted() {
     this.getPayment(this.orderId);
   },
@@ -107,6 +112,7 @@ export default {
     }),
   },
   methods: {
+    //
     async getPayment(orderId) {
       try {
         await this.$store.dispatch("payment", orderId);
@@ -114,6 +120,57 @@ export default {
         alert(error.message);
       }
     },
+    //
+    async getPayStatus(orderId) {
+      try {
+        await this.$store.dispatch("payStatus", orderId);
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+    //
+    async open() {
+      let url = await QRCode.toDataURL(this.payment.codeUrl);
+      this.$alert(`<img src=${url}>`, "请用微信扫码支付", {
+        center: true, //弹出框居中
+        dangerouslyUseHTMLString: true, //允许使用html字符串
+        showCancelButton: true, //显示取消按钮
+        cancelButtonText: "支付遇见问题", //取消按钮文本
+        confirmButtonText: "已支付成功", //确定按钮文本
+        showClose: false, //是否显示关闭按钮
+        //关闭前的回调
+        beforeClose: (action, instance, done) => {
+          if (action === "confirm") {
+            instance.confirmButtonLoading = true;
+            instance.confirmButtonText = "Loading...";
+            let timeoutID = setTimeout(() => {
+              this.getPayStatus(this.orderId);
+              if (this.$store.state.pay.payStatus === 200) {
+                Message.success("支付成功");
+                clearTimeout(timeoutID);
+                instance.confirmButtonLoading = false;
+                this.$router.push("/paysuccess");
+                done();
+              } else {
+                Message.error("支付失败");
+                clearTimeout(timeoutID);
+                instance.confirmButtonLoading = false;
+                done();
+              }
+            }, 1000);
+          } else {
+            done();
+          }
+        },
+      }).catch(() => {
+            Message({
+              type: "info",
+              message: "请联系管理员处理订单",
+            });
+        });
+    },
+
+    //
   },
 };
 </script>

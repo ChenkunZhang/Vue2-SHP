@@ -8,6 +8,7 @@ import AddCartSuccess from "@/pages/AddCartSuccess";
 import ShopCart from "@/pages/ShopCart";
 import Trade from "@/pages/Trade";
 import Pay from "@/pages/Pay";
+import PaySuccess from "@/pages/PaySuccess"
 
 export default [
   {
@@ -67,6 +68,14 @@ export default [
     },
 
     props: route => ({orderId: route.query.orderId}),
+  },
+  {
+    path:"/paysuccess",
+    name:"paysuccess",
+    component:PaySuccess,
+    meta:{
+      show:true
+    }
   },
   {
     path: "/register",
