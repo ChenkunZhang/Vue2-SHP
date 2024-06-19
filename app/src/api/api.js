@@ -104,12 +104,15 @@ export function reqPayment(orderId) {
     method: "get",
   });
 }
+//支付
+// API接口统一管理 获取支付状态 /api/payment/weixin/queryPayStatus/${orderId} GET
 export function reqPayStatus(orderId){
   return service({
     url: `/payment/weixin/queryPayStatus/${orderId}`,
     method: "get",
   });
 }
+
 
 // API接口统一管理 mock数据
 // 获取banner（Home首页轮播图接口）
