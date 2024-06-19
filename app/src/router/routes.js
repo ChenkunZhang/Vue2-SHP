@@ -10,8 +10,9 @@ import Trade from "@/pages/Trade";
 import Pay from "@/pages/Pay";
 import PaySuccess from "@/pages/PaySuccess";
 import Center from "@/pages/Center";
-import MyOrder from '@/pages/Center/myOrder'
-import GroupOrder from '@/pages/Center/groupOrder'
+import MyOrder from "@/pages/Center/myOrder";
+import GroupOrder from "@/pages/Center/groupOrder";
+import { before } from "lodash";
 
 export default [
   {
@@ -45,6 +46,22 @@ export default [
     meta: {
       show: true,
     },
+    beforeEnter (to, from, next) {
+      // 得到当前路由信息对象
+      // const route = router.currentRoute  // route就是from
+
+      // 得到要跳转到目路由的query参数
+      const skuNum = to.query.skuNum
+      // 读取保存的数据
+      const skuInfo = JSON.parse(window.sessionStorage.getItem('SKU_INFO_KEY'))
+      console.log('---', skuNum, skuInfo)
+      // 只有都存在, 才放行
+      if (skuNum && skuInfo) {
+        next()
+      } else { // 在组件对象创建前强制跳转到首页
+        next('/')
+      }
+    }
   },
   {
     path: "/shopcart",
@@ -61,6 +78,14 @@ export default [
     meta: {
       show: true,
     },
+
+    beforeEnter(to, from, next) {
+      if (from.path == "/shopcart") {
+        next();
+      } else {
+        next(false); // Prevent the user from accessing the page directly
+      }
+    },
   },
   {
     path: "/pay",
@@ -71,6 +96,13 @@ export default [
     },
 
     props: (route) => ({ orderId: route.query.orderId }),
+    beforeEnter(to, from, next) {
+      if (from.path == "/trade") {
+        next();
+      } else {
+        next(false); // Prevent the user from accessing the page directly
+      }
+    }
   },
   {
     path: "/paysuccess",
@@ -79,6 +111,13 @@ export default [
     meta: {
       show: true,
     },
+    beforeEnter(to, from, next) {
+      if (from.path == "/pay") {
+        next();
+      } else {
+        next(false); // Prevent the user from accessing the page directly
+      }
+    }
   },
   {
     path: "/center",
