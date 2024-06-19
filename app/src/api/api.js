@@ -36,7 +36,6 @@ export function reqCheckCart(skuId, isChecked) {
 export function reqDeleteCart(skuId) {
   return service({ url: `/cart/deleteCart/${skuId}`, method: "delete" });
 }
-
 // API接口统一管理 获取购物车列表 /api/cart/cartList GET
 export function reqShopCartList() {
   return service({ url: "/cart/cartList", method: "get" });
@@ -82,6 +81,13 @@ export function reqLogout() {
 }
 
 //订单
+// API接口统一管理 获取订单列表 /api/order/auth/{page}/{limit} GET
+export function reqOrderList(page, limit) {
+  return service({
+    url: `/order/auth/${page}/${limit}`,
+    method: "get",
+  });
+}
 // API接口统一管理 获取订单交易页信息 /api/order/auth/trade GET
 export function reqTrade() {
   return service({

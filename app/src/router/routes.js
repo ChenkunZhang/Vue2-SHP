@@ -8,7 +8,10 @@ import AddCartSuccess from "@/pages/AddCartSuccess";
 import ShopCart from "@/pages/ShopCart";
 import Trade from "@/pages/Trade";
 import Pay from "@/pages/Pay";
-import PaySuccess from "@/pages/PaySuccess"
+import PaySuccess from "@/pages/PaySuccess";
+import Center from "@/pages/Center";
+import MyOrder from '@/pages/Center/myOrder'
+import GroupOrder from '@/pages/Center/groupOrder'
 
 export default [
   {
@@ -67,15 +70,36 @@ export default [
       show: true,
     },
 
-    props: route => ({orderId: route.query.orderId}),
+    props: (route) => ({ orderId: route.query.orderId }),
   },
   {
-    path:"/paysuccess",
-    name:"paysuccess",
-    component:PaySuccess,
-    meta:{
-      show:true
-    }
+    path: "/paysuccess",
+    name: "paysuccess",
+    component: PaySuccess,
+    meta: {
+      show: true,
+    },
+  },
+  {
+    path: "/center",
+    name: "center",
+    component: Center,
+    children: [
+      {
+        path: "myorder",
+        name: "myorder",
+        component: MyOrder,
+      },
+      {
+        path: "grouporder",
+        name: "grouporder",
+        component: GroupOrder,
+      },
+      {
+        path: "/center",
+        redirect: "/center/myorder",
+      },
+    ],
   },
   {
     path: "/register",
