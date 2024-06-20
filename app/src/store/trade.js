@@ -26,6 +26,7 @@ export default {
     },
     async getOrderList({commit}, {page, limit}) {
       const result = await reqOrderList(page, limit);
+      console.log(result)
       if (result.data.code === 200) {
         commit("GET_ORDER_LIST", result.data.data);
       } else {

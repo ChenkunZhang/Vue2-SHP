@@ -16,6 +16,15 @@ Vue.component(Message.name,Message);
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
 
+// Lazy loading
+import VueLazyload from 'vue-lazyload';
+import loadingImage from "@/assets/1.gif";
+Vue.use(VueLazyload, {
+  preLoad: 1.64,
+  loading: loadingImage,
+  attempt: 1
+});
+
 new Vue({
   render: (h) => h(App),
   router, // Add the router to the Vue instance
